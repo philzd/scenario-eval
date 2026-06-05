@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+env/
+.venv/
+
+# Generated telemetry data
+data/
+
+# Internal project documentation
+internal/
+
+# Testing
+.pytest_cache/
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
