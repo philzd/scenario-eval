@@ -36,13 +36,20 @@ def build_review_queue(ranked: pd.DataFrame) -> pd.DataFrame:
     """
     Build a review queue from ranked scenarios.
     """
-    required_columns = ["rank", "scenario_id", "value_score"]
+    required_columns = [
+        "rank",
+        "scenario_id",
+        "value_score",
+        "severity_score",
+        "rarity_score",
+    ]
     missing_columns = [col for col in required_columns if col not in ranked.columns]
     if missing_columns:
         raise ValueError(f"Ranked scenarios are missing required columns: {missing_columns}")
 
     queue = ranked[required_columns].copy()
     queue["review_status"] = DEFAULT_REVIEW_STATUS
+    queue["label"] = ""
     queue["review_notes"] = ""
 
     return queue.sort_values("rank").reset_index(drop=True)
