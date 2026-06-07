@@ -16,19 +16,23 @@ This repository implements a simplified data and evaluation workflow for operati
 ```text
 Raw logs
 ↓
-Signal Extraction
+Signal extraction
 ↓
-Scenario Discovery
+Scenario discovery
 ↓
-Scenario Metrics
+Scenario metrics
 ↓
-Scenario Ranking
+Scenario ranking
 ↓
-Human Review
+Review queue
 ↓
-Curated Dataset
+Human review
 ↓
-Engineering Decisions
+Curated dataset
+↓
+Dataset manifest
+↓
+Engineering decisions
 ```
 
 The goal is to help engineers identify, prioritize, review, and curate the scenarios that matter most from large volumes of operational data.
@@ -127,29 +131,22 @@ These visualizations help explain:
 - Scenario prioritization and ranking
 - Visualization and observability tooling
 - Reproducible evaluation artifacts
+- Human-in-the-loop dataset curation
 
 ---
 
 ## Current Status
 
-The current implementation covers scenario extraction, evaluation, ranking, and observability workflows. Human review and dataset curation are planned extensions.
+The current implementation covers automated scenario ranking, human review, dataset curation, and observability workflows.
 
 ### Implemented
 
-- ✓ Synthetic telemetry generation
-- ✓ Scenario extraction
-- ✓ Scenario metrics
-- ✓ Scenario scoring
-- ✓ Scenario ranking
-- ✓ Visualization
-- ✓ End-to-end pipeline orchestration
-
-### Planned
-
-- □ Review queue
-- □ Labels
-- □ Curated dataset
-- □ Dataset manifest
+✓ Automated ranking pipeline
+✓ Review queue generation
+✓ Human review workflow
+✓ Curated dataset generation
+✓ Dataset manifest generation
+✓ Visualization
 
 ---
 
@@ -164,7 +161,6 @@ The current implementation covers scenario extraction, evaluation, ranking, and 
 - [Pipeline Stages](#pipeline-stages)
 - [Core Guarantees](#core-guarantees)
 - [Tech Stack](#tech-stack)
-- [Extensions](#extensions-human-review-and-dataset-curation)
 - [Future Extensions](#future-extensions)
 - [Project Scope](#project-scope)
 - [Usage Notice](#usage-notice)
@@ -174,7 +170,7 @@ The current implementation covers scenario extraction, evaluation, ranking, and 
 
 ## Quick Demo
 
-Run the complete pipeline:
+1. Run the automated ranking pipeline:
 
 ```bash
 python -m src.run_pipeline --rows 2000
@@ -188,13 +184,38 @@ Extracting scenarios...
 Computing scenario metrics...
 Scoring and ranking scenarios...
 
-Scenario Evaluation pipeline complete.
+Pipeline complete.
 
-Telemetry rows generated: 2000
-Scenarios extracted: 8
-Metric records written: 8
-Scores written: 8
-Ranked CSV: outputs/ranked_scenarios.csv
+Telemetry rows generated:   2000
+Scenarios extracted:        8
+Metric records written:     8
+Scores written:             8
+Ranked CSV:                 outputs/ranked_scenarios.csv
+```
+
+2. Generate visualizations:
+
+```bash
+python -m src.visualize_results
+```
+
+3. Generate a review queue:
+
+```bash
+python -m src.create_review_queue
+```
+
+4. Edit `outputs/review_queue.csv` to update:
+
+- `review_status`
+- `label`
+- `review_notes`
+
+5. Build the curated dataset and manifest:
+
+```bash
+python -m src.build_curated_dataset
+python -m src.build_dataset_manifest
 ```
 
 ---
@@ -245,7 +266,7 @@ Instead, they need systems that help answer:
 - What matters?
 - What should we investigate next?
 
-This project demonstrates a simplified workflow that transforms raw telemetry into structured scenarios, evaluation signals, and prioritized evaluation artifacts, with planned extensions for human review and dataset curation.
+This project demonstrates a workflow that transforms raw telemetry into structured scenarios, evaluation signals, ranked review queues, curated datasets, and dataset-level metadata.
 
 The architecture is inspired by evaluation and data workflows commonly found in robotics, autonomous systems, and embodied AI platforms.
 
@@ -288,9 +309,13 @@ Scenario scoring
 ↓
 Ranked scenarios
 ↓
+Review queue
+↓
 Human review
 ↓
 Curated dataset
+↓
+Dataset manifest
 ↓
 Engineering decisions
 ```
@@ -317,7 +342,10 @@ scenario_eval/
 │   ├── scenarios.jsonl
 │   ├── scenario_metrics.jsonl
 │   ├── scenario_scores.jsonl
-│   └── ranked_scenarios.csv
+│   ├── ranked_scenarios.csv
+│   ├── review_queue.csv
+│   ├── curated_dataset.jsonl
+│   └── dataset_manifest.json
 │
 ├── docs/
 │
@@ -327,7 +355,10 @@ scenario_eval/
 │   ├── compute_metrics.py
 │   ├── score_scenarios.py
 │   ├── visualize_results.py
-│   └── run_pipeline.py
+│   ├── run_pipeline.py
+│   ├── create_review_queue.py
+│   ├── build_curated_dataset.py
+│   └── build_dataset_manifest.py
 │
 └── tests/
 ```
@@ -338,7 +369,7 @@ Note: `data/` is generated automatically when the pipeline runs.
 
 ## Pipeline Stages
 
-### 1. Synthetic Telemetry Generation
+### 1. Synthetic telemetry generation
 
 Synthetic operational telemetry is generated to simulate operational logs.
 
@@ -346,7 +377,7 @@ Artifacts produced:
 
 `data/raw/synthetic_telemetry.csv`
 
-### 2. Scenario Extraction
+### 2. Scenario extraction
 
 Continuous telemetry is converted into discrete scenario windows.
 
@@ -360,7 +391,7 @@ Artifacts produced:
 
 `outputs/scenarios.jsonl`
 
-### 3. Scenario Metrics
+### 3. Scenario metrics
 
 Metrics are computed for each extracted scenario.
 
@@ -376,7 +407,7 @@ Artifacts produced:
 
 `outputs/scenario_metrics.jsonl`
 
-### 4. Scenario Scoring
+### 4. Scenario scoring
 
 Scenarios are scored using interpretable evaluation signals.
 
@@ -389,7 +420,7 @@ Artifacts produced:
 
 `outputs/scenario_scores.jsonl`
 
-### 5. Scenario Ranking
+### 5. Scenario ranking
 
 Scenarios are ranked according to overall value using severity and rarity scores.
 
@@ -407,6 +438,32 @@ Artifacts produced:
 - `outputs/plots/ttc_timeline.png`
 - `outputs/plots/acceleration_jerk_timeline.png`
 - `outputs/plots/ranked_scenario_scores.png`
+
+### 7. Human review workflow
+
+Ranked scenarios are converted into a review queue for human inspection.
+
+Artifacts produced:
+
+`outputs/review_queue.csv`
+
+Human reviewers can update:
+
+- `review_status`
+- `label`
+- `review_notes`
+
+Only scenarios marked as accepted are included in the curated dataset.
+
+Artifacts produced:
+
+`outputs/curated_dataset.jsonl`
+
+Dataset-level metadata is generated for tracking dataset composition.
+
+Artifacts produced:
+
+`outputs/dataset_manifest.json`
 
 ---
 
@@ -440,79 +497,6 @@ The platform provides metrics and visualizations that help explain why scenarios
 
 ---
 
-## Extensions: Human Review and Dataset Curation
-
-The platform can be extended beyond scenario ranking into human-in-the-loop review and dataset curation workflows.
-
-### Review Queue
-
-Artifact:
-
-`outputs/review_queue.csv`
-
-Contains:
-
-- `rank`
-- `scenario_id`
-- `value_score`
-- `review_status`
-- `review_notes`
-
-### Labels
-
-Artifact:
-
-`outputs/labels.csv`
-
-Examples:
-
-- `edge_case`
-- `interesting`
-- `false_positive`
-- `regression`
-- `safety_critical`
-
-### Curated Dataset
-
-Artifact:
-
-`outputs/curated_dataset.jsonl`
-
-Approved scenarios are assembled into a curated dataset for downstream evaluation and analysis.
-
-### Dataset Manifest
-
-Artifact:
-
-`outputs/dataset_manifest.json`
-
-Tracks:
-
-- dataset version
-- label distribution
-- approval statistics
-- dataset composition
-
-### End-to-End Workflow
-
-```text
-Raw logs
-↓
-Scenario extraction
-↓
-Ranking
-↓
-Review queue
-↓
-Labels
-↓
-Curated dataset
-↓
-Engineering decisions
-```
-
----
-
 ## Future Extensions
 
 Possible future extensions include:
@@ -520,7 +504,7 @@ Possible future extensions include:
 - Advanced dataset governance
 - Dataset health metrics
 - Failure mode analysis
-- Review progress dashboards
+- Review dashboards
 - Docker
 - GitHub Actions
 - PySpark
