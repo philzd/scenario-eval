@@ -534,9 +534,9 @@ It does not include:
 
 ## Usage Notice
 
-This repository is shared for portfolio and evaluation purposes.
+This repository is shared for portfolio and demonstration purposes.
 
-Please contact the author for permission before reusing or redistributing the code.
+Please contact the author before reusing or redistributing the code.
 
 ---
 
