@@ -1,9 +1,9 @@
 rank,scenario_id,value_score,severity_score,rarity_score,review_status,label,review_notes
 1,synthetic_telemetry_0002,30.0,20.0,10.0,pending,,
-2,synthetic_telemetry_0001,15.493129815947205,5.493129815947204,10.0,pending,,
-3,synthetic_telemetry_0005,1.8153970988740695,1.8153970988740695,0.0,pending,,
-4,synthetic_telemetry_0006,1.5470919881619745,1.5470919881619745,0.0,pending,,
-5,synthetic_telemetry_0004,1.2514005967683195,1.2514005967683195,0.0,pending,,
+2,synthetic_telemetry_0001,15.493129815947205,5.493129815947204,10.0,accepted,edge_case,"low TTC with high jerk"
+3,synthetic_telemetry_0005,1.8153970988740695,1.8153970988740695,0.0,rejected,edge_case,"low TTC with high jerk"
+4,synthetic_telemetry_0006,1.5470919881619745,1.5470919881619745,0.0,rejected,false_positive,"minor jerk event"
+5,synthetic_telemetry_0004,1.2514005967683195,1.2514005967683195,0.0,accepted,interesting,"worth future evaluation"
 6,synthetic_telemetry_0008,0.9174367599554616,0.9174367599554616,0.0,pending,,
 7,synthetic_telemetry_0003,0.4690998001085074,0.4690998001085074,0.0,pending,,
 8,synthetic_telemetry_0007,0.3550274126610429,0.3550274126610429,0.0,pending,,
