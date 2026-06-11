@@ -32,6 +32,8 @@ Curated dataset
 ↓
 Dataset manifest
 ↓
+Coverage analysis
+↓
 Engineering decisions
 ```
 
@@ -137,7 +139,7 @@ These visualizations help explain:
 
 ## Current Status
 
-The current implementation covers automated scenario ranking, human review, dataset curation, and observability workflows.
+The current implementation covers scenario prioritization, human review, dataset curation, coverage analysis, and observability workflows.
 
 ### Implemented
 
@@ -146,6 +148,7 @@ The current implementation covers automated scenario ranking, human review, data
 ✓ Human review workflow
 ✓ Curated dataset generation
 ✓ Dataset manifest generation
+✓ Coverage analysis
 ✓ Visualization
 
 ---
@@ -216,6 +219,8 @@ python -m src.create_review_queue
 ```bash
 python -m src.build_curated_dataset
 python -m src.build_dataset_manifest
+python -m src.build_coverage_report
+python -m src.build_coverage_gaps
 ```
 
 ---
@@ -317,6 +322,8 @@ Curated dataset
 ↓
 Dataset manifest
 ↓
+Coverage analysis
+↓
 Engineering decisions
 ```
 
@@ -345,7 +352,9 @@ scenario_eval/
 │   ├── ranked_scenarios.csv
 │   ├── review_queue.csv
 │   ├── curated_dataset.jsonl
-│   └── dataset_manifest.json
+│   ├── dataset_manifest.json
+│   ├── coverage_report.json
+│   └── coverage_gaps.json
 │
 ├── docs/
 │
@@ -358,7 +367,9 @@ scenario_eval/
 │   ├── run_pipeline.py
 │   ├── create_review_queue.py
 │   ├── build_curated_dataset.py
-│   └── build_dataset_manifest.py
+│   ├── build_dataset_manifest.py
+│   ├── build_coverage_report.py
+│   └── build_coverage_gaps.py
 │
 └── tests/
 ```
@@ -465,6 +476,25 @@ Artifacts produced:
 
 `outputs/dataset_manifest.json`
 
+### 8. Coverage analysis
+
+Coverage analysis summarizes review outcomes and dataset composition.
+
+Artifacts produced:
+
+- `outputs/coverage_report.json`
+- `outputs/coverage_gaps.json`
+
+Coverage analysis reports:
+
+- review status counts
+- acceptance rate
+- label distribution
+- represented labels
+- missing labels
+
+These artifacts help identify dataset coverage gaps and guide future review and data collection efforts.
+
 ---
 
 ## Core Guarantees
@@ -501,10 +531,10 @@ The platform provides metrics and visualizations that help explain why scenarios
 
 Possible future extensions include:
 
-- Advanced dataset governance
-- Dataset health metrics
+- Coverage dashboards
 - Failure mode analysis
-- Review dashboards
+- Review observability
+- Dataset health metrics
 - Docker
 - GitHub Actions
 - PySpark
