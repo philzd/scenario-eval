@@ -1,0 +1,28 @@
+{
+  "total_review_queue_items": 8,
+  "review_status_counts": {
+    "pending": 4,
+    "accepted": 3,
+    "rejected": 1
+  },
+  "accepted_count": 3,
+  "rejected_count": 1,
+  "pending_count": 4,
+  "needs_review_count": 0,
+  "acceptance_rate": 0.375,
+  "curated_dataset_size": 3,
+  "label_distribution": {
+    "safety_critical": 1,
+    "edge_case": 1,
+    "interesting": 1
+  },
+  "represented_labels": [
+    "safety_critical",
+    "edge_case",
+    "interesting"
+  ],
+  "missing_labels": [
+    "false_positive",
+    "regression"
+  ]
+}
