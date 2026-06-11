@@ -1,0 +1,13 @@
+{
+  "represented_labels": [
+    "safety_critical",
+    "edge_case",
+    "interesting"
+  ],
+  "missing_labels": [
+    "false_positive",
+    "regression"
+  ],
+  "num_represented_labels": 3,
+  "num_missing_labels": 2
+}
