@@ -143,13 +143,13 @@ The current implementation covers scenario prioritization, human review, dataset
 
 ### Implemented
 
-✓ Automated ranking pipeline
-✓ Review queue generation
-✓ Human review workflow
-✓ Curated dataset generation
-✓ Dataset manifest generation
-✓ Coverage analysis
-✓ Visualization
+- ✓ Automated ranking pipeline
+- ✓ Review queue generation
+- ✓ Human review workflow
+- ✓ Curated dataset generation
+- ✓ Dataset manifest generation
+- ✓ Coverage analysis
+- ✓ Visualization
 
 ---
 
