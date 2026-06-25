@@ -7,6 +7,8 @@ A data and evaluation platform that transforms operational AI logs into curated,
 
 This project demonstrates how large volumes of operational telemetry can be converted into structured scenarios, evaluation signals, ranked review queues, and curated datasets. The current implementation uses autonomous driving telemetry, but the architecture is intended to generalize to robotics, embodied AI, simulation, teleoperation, and other operational AI systems.
 
+The current implementation uses synthetic telemetry to validate the evaluation workflow. Future work includes applying the platform to real-world operational datasets.
+
 ---
 
 ## TL;DR
@@ -33,6 +35,10 @@ Curated dataset
 Dataset manifest
 ↓
 Coverage analysis
+↓
+Failure discovery
+↓
+Engineering insights
 ↓
 Engineering decisions
 ```
@@ -150,6 +156,7 @@ The current implementation covers scenario prioritization, human review, dataset
 - ✓ Dataset manifest generation
 - ✓ Coverage analysis
 - ✓ Visualization
+- ✓ Failure summary analysis
 
 ---
 
@@ -221,6 +228,7 @@ python -m src.build_curated_dataset
 python -m src.build_dataset_manifest
 python -m src.build_coverage_report
 python -m src.build_coverage_gaps
+python -m src.build_failure_summary
 ```
 
 ---
@@ -324,6 +332,10 @@ Dataset manifest
 ↓
 Coverage analysis
 ↓
+Failure discovery
+↓
+Engineering insights
+↓
 Engineering decisions
 ```
 
@@ -354,7 +366,8 @@ scenario_eval/
 │   ├── curated_dataset.jsonl
 │   ├── dataset_manifest.json
 │   ├── coverage_report.json
-│   └── coverage_gaps.json
+│   ├── coverage_gaps.json
+│   └── failure_summary.json
 │
 ├── docs/
 │
@@ -369,7 +382,8 @@ scenario_eval/
 │   ├── build_curated_dataset.py
 │   ├── build_dataset_manifest.py
 │   ├── build_coverage_report.py
-│   └── build_coverage_gaps.py
+│   ├── build_coverage_gaps.py
+│   └── build_failure_summary.py
 │
 └── tests/
 ```
@@ -495,6 +509,24 @@ Coverage analysis reports:
 
 These artifacts help identify dataset coverage gaps and guide future review and data collection efforts.
 
+### 9. Failure summary
+
+Failure summary aggregates reviewed scenarios into engineering-oriented insights.
+
+Artifacts produced:
+
+- `outputs/failure_summary.json`
+
+Examples include:
+
+- trigger type counts
+- review label counts
+- accepted label counts
+- highest-value scenarios
+- highest-value accepted scenarios
+
+These summaries help engineers identify recurring operational behaviors and prioritize future investigation.
+
 ---
 
 ## Core Guarantees
@@ -531,10 +563,11 @@ The platform provides metrics and visualizations that help explain why scenarios
 
 Possible future extensions include:
 
-- Coverage dashboards
-- Failure mode analysis
+- Real-world operational dataset adapters
+- Failure pattern analysis
 - Review observability
 - Dataset health metrics
+- Coverage dashboards
 - Docker
 - GitHub Actions
 - PySpark
