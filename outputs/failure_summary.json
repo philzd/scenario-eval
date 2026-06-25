@@ -1,0 +1,85 @@
+{
+  "trigger_type_counts": {
+    "hard_braking": 1,
+    "high_jerk": 8,
+    "low_ttc": 1
+  },
+  "review_label_counts": {
+    "safety_critical": 1,
+    "edge_case": 1,
+    "false_positive": 1,
+    "interesting": 1
+  },
+  "accepted_label_counts": {
+    "safety_critical": 1,
+    "edge_case": 1,
+    "interesting": 1
+  },
+  "most_common_trigger": "high_jerk",
+  "most_common_review_label": "safety_critical",
+  "most_common_accepted_label": "safety_critical",
+  "top_ranked_scenarios": [
+    {
+      "rank": 1,
+      "scenario_id": "synthetic_telemetry_0002",
+      "value_score": 30.0,
+      "trigger_types": [
+        "hard_braking",
+        "high_jerk"
+      ]
+    },
+    {
+      "rank": 2,
+      "scenario_id": "synthetic_telemetry_0001",
+      "value_score": 15.493129815947205,
+      "trigger_types": [
+        "high_jerk",
+        "low_ttc"
+      ]
+    },
+    {
+      "rank": 3,
+      "scenario_id": "synthetic_telemetry_0005",
+      "value_score": 1.8153970988740695,
+      "trigger_types": [
+        "high_jerk"
+      ]
+    },
+    {
+      "rank": 4,
+      "scenario_id": "synthetic_telemetry_0006",
+      "value_score": 1.5470919881619745,
+      "trigger_types": [
+        "high_jerk"
+      ]
+    },
+    {
+      "rank": 5,
+      "scenario_id": "synthetic_telemetry_0004",
+      "value_score": 1.2514005967683195,
+      "trigger_types": [
+        "high_jerk"
+      ]
+    }
+  ],
+  "top_accepted_scenarios": [
+    {
+      "rank": 1,
+      "scenario_id": "synthetic_telemetry_0002",
+      "value_score": 30.0,
+      "label": "safety_critical"
+    },
+    {
+      "rank": 2,
+      "scenario_id": "synthetic_telemetry_0001",
+      "value_score": 15.493129815947205,
+      "label": "edge_case"
+    },
+    {
+      "rank": 5,
+      "scenario_id": "synthetic_telemetry_0004",
+      "value_score": 1.2514005967683195,
+      "label": "interesting"
+    }
+  ]
+}
