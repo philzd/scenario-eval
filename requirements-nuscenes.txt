@@ -1,0 +1,2 @@
+-r requirements.txt
+nuscenes-devkit==1.2.0

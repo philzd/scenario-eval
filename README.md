@@ -5,9 +5,9 @@
 
 A data and evaluation platform that transforms operational AI logs into curated, evaluation-ready datasets through signal extraction, scenario prioritization, human review, and reproducible workflows.
 
-This project demonstrates how large volumes of operational telemetry can be converted into structured scenarios, evaluation signals, ranked review queues, and curated datasets. The current implementation uses autonomous driving telemetry, but the architecture is intended to generalize to robotics, embodied AI, simulation, teleoperation, and other operational AI systems.
+This project demonstrates how large volumes of operational telemetry can be converted into structured scenarios, evaluation signals, ranked review queues, and curated datasets. The evaluation workflow is built around a canonical telemetry format, enabling multiple operational data sources to be processed through a common evaluation pipeline. While the current implementation focuses on autonomous driving telemetry, the architecture is designed to generalize to robotics, embodied AI, simulation, teleoperation, and other operational AI systems.
 
-The current implementation uses synthetic telemetry to validate the evaluation workflow. Future work includes applying the platform to real-world operational datasets.
+The repository includes both a synthetic telemetry generator for deterministic development and testing and an optional adapter for the nuScenes autonomous driving dataset. The adapter demonstrates how real-world operational data can be transformed into the canonical telemetry format used by the existing scenario extraction, metric computation, scoring, and review workflow.
 
 ---
 
@@ -145,7 +145,7 @@ These visualizations help explain:
 
 ## Current Status
 
-The current implementation covers scenario prioritization, human review, dataset curation, coverage analysis, and observability workflows.
+The current implementation provides an end-to-end evaluation workflow including scenario extraction, metric computation, prioritization, human review, dataset curation, coverage analysis, failure summarization, and real-world dataset adaptation.
 
 ### Implemented
 
@@ -157,6 +157,7 @@ The current implementation covers scenario prioritization, human review, dataset
 - ✓ Coverage analysis
 - ✓ Visualization
 - ✓ Failure summary analysis
+- ✓ nuScenes telemetry adapter
 
 ---
 
@@ -164,6 +165,7 @@ The current implementation covers scenario prioritization, human review, dataset
 
 - [Quick Demo](#quick-demo)
 - [Getting Started](#getting-started)
+- [nuScenes Adapter](#nuscenes-adapter)
 - [Why This Project Exists](#why-this-project-exists)
 - [What This Project Is and Is Not](#what-this-project-is--is-not)
 - [System Architecture](#system-architecture)
@@ -231,6 +233,8 @@ python -m src.build_coverage_gaps
 python -m src.build_failure_summary
 ```
 
+Optionally, the repository also includes a nuScenes adapter for converting a real autonomous driving dataset into the canonical telemetry format used by the evaluation workflow.
+
 ---
 
 ## Getting Started
@@ -263,6 +267,28 @@ python -m src.run_pipeline --rows 2000
    
 ```bash
 python -m src.visualize_results
+```
+
+---
+
+## nuScenes Adapter
+
+The repository includes an optional nuScenes adapter that converts a nuScenes scene into the canonical telemetry format used by the evaluation workflow.
+
+The adapter derives motion signals from ego poses and scene annotations, then writes a telemetry CSV compatible with the existing scenario extraction, metric computation, and scoring pipeline.
+
+The nuScenes dataset is not included in this repository and must be downloaded separately.
+
+Example:
+
+```bash
+pip install -r requirements-nuscenes.txt
+
+python -m src.adapters.nuscenes \
+  --dataroot ../datasets/nuscenes \
+  --version v1.0-mini \
+  --scene-name scene-0061 \
+  --output data/real/nuscenes_telemetry.csv
 ```
 
 ---
@@ -383,7 +409,10 @@ scenario_eval/
 │   ├── build_dataset_manifest.py
 │   ├── build_coverage_report.py
 │   ├── build_coverage_gaps.py
-│   └── build_failure_summary.py
+│   ├── build_failure_summary.py
+│   └── adapters/
+│       ├── __init__.py
+│       └── nuscenes.py
 │
 └── tests/
 ```
@@ -556,6 +585,7 @@ The platform provides metrics and visualizations that help explain why scenarios
 - NumPy
 - JSONL / CSV artifact pipelines
 - Matplotlib
+- nuScenes devkit (optional real-data adapter)
 
 ---
 
@@ -563,7 +593,7 @@ The platform provides metrics and visualizations that help explain why scenarios
 
 Possible future extensions include:
 
-- Real-world operational dataset adapters
+- Additional real-world operational dataset adapters
 - Failure pattern analysis
 - Review observability
 - Dataset health metrics
